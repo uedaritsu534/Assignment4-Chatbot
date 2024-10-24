@@ -1,5 +1,6 @@
 const OpenAI = require("openai");
 const openai = new OpenAI();
+const userInput = document.getElementById('message-input');
 
 async function chatWithOpenAI(userInput) {
     // Make a POST request to the OpenAI chatbot API
@@ -52,3 +53,13 @@ module.exports = {
     chatWithOpenAI
 };
 
+const sendButton = document.getElementById('send-button');
+sendButton.addEventListener('click', chatWithOpenAI(userInput));
+
+
+const consoleOutput = document.getElementById('console-output');
+function log(message) {
+    console.log(message);
+    consoleOutput.textContent += message + '\n';
+    consoleOutput.scrollTop = consoleOutput.scrollHeight;
+}
