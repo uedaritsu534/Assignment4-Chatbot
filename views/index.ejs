@@ -28,8 +28,18 @@
         <!-- User Input Section -->
         <form class="input-container" action="./message" method="POST">
             <input type="text" name="message" placeholder="Type your response here..." />
-            <button type="submit" id="send-btn">Send</button>
+            <button type="submit" id="send-btn" onclick="onsend()">Send</button>
         </form>
+
+        <script>
+            const onsend = () => {
+                const chatbox = document.getElementById('chatbox');
+                const loading = document.createElement('div');
+                loading.classList.add('message', 'bot-message');
+                loading.innerHTML = '<p>Loading...</p>';
+                chatbox.appendChild(loading);
+            }
+        </script>
     </div>
 </body>
 </html>
