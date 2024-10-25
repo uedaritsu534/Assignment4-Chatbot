@@ -2,7 +2,7 @@ const OpenAI = require("openai");
 const openai = new OpenAI();
 
 const prompt = {
-  "role": "user",
+  "role": "system",
   "content": [
     {
       "type": "text",
@@ -12,7 +12,7 @@ const prompt = {
 };
 
 const intro = {
-  "role": "system",
+  "role": "assistant",
   "content": [
     {
       "type": "text",
@@ -40,9 +40,17 @@ async function chatWithOpenAI(messages) {
       ]
     });
 
-    return response.choices[0].message;
+    return response.choices[0].message.content;
+}
+
+function appendInitial(messages) {
+  return [
+    { role: intro.role, content: intro.content[0].text },
+      ...messages
+  ];
 }
 
 module.exports = {
-    chatWithOpenAI
+  chatWithOpenAI,
+  appendInitial
 };

@@ -3,7 +3,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
-const { chatWithOpenAI } = require('./chatbot.js');
+const { chatWithOpenAI, appendInitial } = require('./chatbot.js');
 const { newChat, getChats, postChats, closeMongo } = require('./mongo.js');
 
 const app = express();
@@ -21,19 +21,20 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', async (req, res) => {
   const id = await newChat();
-  res.redirect(`/chats/${id}`);
+  res.redirect(`/chats/${id}/`);
 });
 
 app.get('/chats/:chatId', async (req, res) => {
-  const chats = await getChats(req.params.chatId);
+  const partialChats = await getChats(req.params.chatId);
+  const chats = appendInitial(partialChats);
   res.render('index', { chats });
 });
 
 app.post('/chats/:chatId/message', async (req, res) => {
-  const chats = getChats(req.params.chatId);
+  const chats = await getChats(req.params.chatId);
   const response = await chatWithOpenAI([...chats, { role: 'user', content: req.body.message}]);
   await postChats(req.params.chatId, req.body.message, response)
-  res.status(200).json({success: true});
+  res.redirect(`/chats/${req.params.chatId}/`);
 });
 
 // catch 404 and forward to error handler

@@ -25,9 +25,8 @@ module.exports.getChats = async (chatId) => {
     const db = client.db('data');
     const chats = db.collection('chats');
 
-    console.log(chatId);
-    console.log(typeof chatId);
     const response = await chats.findOne({_id: new ObjectId(chatId)});
+    console.log(response.messages);
     return response.messages;
 }
 
@@ -37,7 +36,7 @@ module.exports.postChats = async (chatId, user, bot) => {
 
     await chats.updateOne({_id: new ObjectId(chatId)}, {$push: {messages: {$each: [
         {role: 'user', content: user},
-        {role: 'bot', content: bot}
+        {role: 'assistant', content: bot}
     ]}}});
 }
 
