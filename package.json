@@ -2,15 +2,18 @@
   "name": "chatbot",
   "version": "0.0.0",
   "private": true,
+  "main": "app.js",
   "scripts": {
-    "start": "npm install && node app.js"
+    "start": "npm install && node --env-file=.env app.js"
   },
   "dependencies": {
+    "body-parser": "^1.20.3",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
-    "ejs": "~2.6.1",
-    "express": "~4.16.1",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
     "http-errors": "~1.6.3",
+    "mongodb": "^6.10.0",
     "morgan": "~1.9.1",
     "openai": "^4.68.4"
   }
