@@ -47,8 +47,10 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
+// Chat history
 const chatHistory = [];
 
+//Makes the API call to OpenAI
 app.post('/message', async (req, res) => {
 
   console.log(process.env.OPENAI_API_KEY);
@@ -56,21 +58,26 @@ app.post('/message', async (req, res) => {
   try {
       const prompt = req.body;
 
+      //Iterate through the chat history to create the messages array
       const messages = chatHistory.map(([role, content]) => ({
         role,
         content,
       }));
 
+      //add the most recent user input to the messages array
       messages.push({"role": "user", "content": prompt})
 
+      //Call the OpenAI API
       const chatCompletion = await openai.createChatCompletion({
           model: "gpt-4o",
           messages: messages,
         });
 
+        //adds the user input and the completion text to the chat history
         chatHistory.push(['user', userInput]);
         chatHistory.push(['assistant', completionText]);
 
+        //returns the completion text to the client
         res.json({
           message : chatCompletion.data.choices[0].message.content,
           role: chatCompletion.data.choices[0].message.role
