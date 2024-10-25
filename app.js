@@ -4,6 +4,14 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 
+const dotenv = require('dotenv');
+dotenv.config(); // Load environment variables from .env file
+
+const OpenAIApi = require('openai');
+const openai = new OpenAIApi({
+  api_key: process.env.OPENAI_API_KEY
+});
+
 const app = express();
 
 // view engine setup
@@ -15,6 +23,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+const port = process.env.PORT || 3000;
+const server = app.listen(port, () => console.log(`Server running on port ${port}`));
 
 app.get('/', (req, res) => {
   res.render('index');
@@ -36,5 +47,37 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-const port = process.env.PORT || 3000;
-const server = app.listen(port, () => console.log(`Server running on port ${port}`));
+const chatHistory = [];
+
+app.post('/message', async (req, res) => {
+
+  console.log(process.env.OPENAI_API_KEY);
+
+  try {
+      const prompt = req.body;
+
+      const messages = chatHistory.map(([role, content]) => ({
+        role,
+        content,
+      }));
+
+      messages.push({"role": "user", "content": prompt})
+
+      const chatCompletion = await openai.createChatCompletion({
+          model: "gpt-4o",
+          messages: messages,
+        });
+
+        chatHistory.push(['user', userInput]);
+        chatHistory.push(['assistant', completionText]);
+
+        res.json({
+          message : chatCompletion.data.choices[0].message.content,
+          role: chatCompletion.data.choices[0].message.role
+        });
+  } catch (error) {
+      console.log("caught error");
+      console.log(JSON.stringify(error));
+  }
+
+});
