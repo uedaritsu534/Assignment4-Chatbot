@@ -1,11 +1,62 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chatbot</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medieval Fantasy Adventure Chatbot</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
 <body>
-<h1>Chatbot</h1>
-<p>Hello, world.</p>
+    <div class="container">
+        <h1>Medieval Fantasy Adventure</h1>
+
+        <!-- Avatar Section -->
+        <div class="avatar-section">
+            <img class="avatar" src="/images/avatar-placeholder.png" alt="Bot Avatar">
+        </div>
+
+        <!-- Chat Messages Section -->
+        <div id="chatbox" class="chatbox">
+            <!-- Bot's welcome message -->
+            <div class="message bot-message">
+                <p>Welcome, brave adventurer! What is your name?</p>
+            </div>
+        </div>
+
+        <!-- User Input Section -->
+        <div class="input-container">
+            <input type="text" id="user-input" placeholder="Type your response here...">
+            <button id="send-btn">Send</button>
+        </div>
+    </div>
+
+    <script>
+        // Placeholder script for handling chat messages
+        const chatbox = document.getElementById('chatbox');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-btn');
+
+        sendButton.addEventListener('click', function() {
+            const userMessage = userInput.value;
+
+            if (userMessage.trim()) {
+                // Add user's message to the chatbox
+                const userMessageElement = document.createElement('div');
+                userMessageElement.classList.add('message', 'user-message');
+                userMessageElement.innerHTML = `<p>${userMessage}</p>`;
+                chatbox.appendChild(userMessageElement);
+                userInput.value = ''; // Clear input field
+
+                // Simulate bot's response (to be replaced by dynamic responses later)
+                const botResponse = document.createElement('div');
+                botResponse.classList.add('message', 'bot-message');
+                botResponse.innerHTML = `<p>Ah, ${userMessage}, prepare for your quest!</p>`;
+                chatbox.appendChild(botResponse);
+
+                // Scroll to the bottom of the chatbox
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,8 +1,93 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+  background-image: url('/stylesheets/HD-wallpaper-fantasy-landscape-mountains-waterfall-river-fantasy.jpg'); /* Path to the background image */
+  background-size: cover;  /* Ensures the image covers the entire screen */
+  background-position: center;  /* Centers the background image */
+  background-repeat: no-repeat;  /* Prevents the image from repeating */
+  font-family: 'MedievalSharp', 'Lucida Grande', Helvetica, Arial, sans-serif;  /* Medieval style font */
+  color: #333;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
-a {
-  color: #00B7FF;
+
+.container {
+  width: 60%;
+  background-color: #fdf9f3; / Parchment color /
+  border: 2px solid #b5651d; / Wood frame effect /
+  border-radius: 15px;
+  padding: 20px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  text-align: center;
+  color: #b5651d;
+  margin-bottom: 20px;
+}
+
+.avatar-section {
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.avatar {
+  width: 120px;
+  border-radius: 50%;
+  border: 2px solid #b5651d;
+}
+
+.chatbox {
+  background-color: #f9f2e9;
+  border: 1px solid #b5651d;
+  padding: 10px;
+  height: 300px;
+  overflow-y: auto;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.message {
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 8px;
+}
+
+.bot-message {
+  background-color: #e6d4b7; / Slightly darker for bot messages /
+  text-align: left;
+}
+
+.user-message {
+  background-color: #f9e4b7; / Lighter color for user messages */
+  text-align: right;
+}
+
+.input-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+input[type="text"] {
+  width: 85%;
+  padding: 10px;
+  border: 1px solid #b5651d;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+button {
+  background-color: #b5651d;
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #8a4513;
 }
