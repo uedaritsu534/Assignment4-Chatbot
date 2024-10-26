@@ -1,93 +1,118 @@
+/* Styling for the main page background */
 body {
-  background-image: url('/stylesheets/HD-wallpaper-fantasy-landscape-mountains-waterfall-river-fantasy.jpg'); /* Path to the background image */
-  background-size: cover;  /* Ensures the image covers the entire screen */
-  background-position: center;  /* Centers the background image */
-  background-repeat: no-repeat;  /* Prevents the image from repeating */
-  font-family: 'MedievalSharp', 'Lucida Grande', Helvetica, Arial, sans-serif;  /* Medieval style font */
-  color: #333;
+  background-image: url('/stylesheets/background.jpg'); /* Scenic medieval fantasy background */
+  background-size: cover; /* Ensures background covers the entire viewport */
+  background-position: center; /* Centers the background image */
+  background-repeat: no-repeat; /* Prevents the image from repeating */
+  font-family: 'MedievalSharp', 'Lucida Grande', Helvetica, Arial, sans-serif; /* Medieval-style font */
+  color: #333; /* Text color */
   margin: 0;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100vh; /* Full height to fit the viewport */
 }
 
-
+/* Container for the main chatbot interface */
 .container {
   width: 60%;
-  background-color: #fdf9f3; / Parchment color /
-  border: 2px solid #b5651d; / Wood frame effect /
+  background-image: url('/stylesheets/paper.jpg'); /* Scroll paper background for medieval effect */
+  background-size: cover;
+  background-repeat: no-repeat;
+  border: 2px solid #b5651d; /* Frame-like border for an old-world look */
   border-radius: 15px;
   padding: 20px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); /* Adds a shadow for depth */
 }
 
+/* Styling for the main title */
 h1 {
   text-align: center;
-  color: #b5651d;
+  color: #4a2c2a; /* Dark ink color for authenticity */
   margin-bottom: 20px;
+  font-family: 'Great Vibes', cursive; /* Calligraphy font for title */
+  font-size: 3em; /* Large size for prominence */
 }
 
+/* Centers the avatar section */
 .avatar-section {
   text-align: center;
   margin-bottom: 15px;
 }
 
+/* Styling for the avatar image */
 .avatar {
-  width: 120px;
-  border-radius: 50%;
-  border: 2px solid #b5651d;
+  width: 120px; /* Controls avatar size */
+  border-radius: 50%; /* Circular avatar */
+  border: 2px solid #b5651d; /* Matches container border */
 }
 
+/* Chatbox styling for displaying messages */
 .chatbox {
-  background-color: #f9f2e9;
+  background-color: rgba(249, 242, 233, 0.9); /* Light parchment-like color with slight transparency */
   border: 1px solid #b5651d;
   padding: 10px;
-  height: 300px;
-  overflow-y: auto;
+  height: 300px; /* Fixed height with scroll enabled */
+  overflow-y: auto; /* Allows vertical scrolling for overflow messages */
   border-radius: 10px;
   margin-bottom: 15px;
 }
 
+/* Common styling for both bot and user messages */
 .message {
   padding: 10px;
   margin: 10px 0;
-  border-radius: 8px;
+  border-radius: 8px; /* Rounded corners for message bubbles */
 }
 
+/* Background color for bot messages */
 .bot-message {
-  background-color: #e6d4b7; / Slightly darker for bot messages /
-  text-align: left;
+  background-color: #e6d4b7; /* Slightly darker color for bot messages */
+  text-align: left; /* Aligns bot messages to the left */
 }
 
+/* Background color for user messages */
 .user-message {
-  background-color: #f9e4b7; / Lighter color for user messages */
-  text-align: right;
+  background-color: #f9e4b7; /* Lighter color for user messages */
+  text-align: right; /* Aligns user messages to the right */
 }
 
+/* Layout styling for the input and send button container */
 .input-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* Spreads the input and button */
 }
 
+/* Styling for the user input text field */
 input[type="text"] {
-  width: 85%;
+  width: 85%; /* Occupies most of the space */
   padding: 10px;
   border: 1px solid #b5651d;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: 14px; /* Text size for readability */
 }
 
+/* Styling for the send button */
 button {
-  background-color: #b5651d;
-  color: white;
+  background-color: #d7b899; /* Lighter parchment color for the button */
   border: none;
   padding: 10px;
   border-radius: 5px;
-  cursor: pointer;
+  cursor: pointer; /* Pointer cursor on hover */
+  display: flex; /* Centers icon within button */
+  align-items: center;
+  justify-content: center;
 }
 
-button:hover {
-  background-color: #8a4513;
+  /* Darker color on hover for interaction feedback */
+  button:hover {
+      background-color: #bfa27f; /* Darker shade for hover effect */
+  }
+
+/* Icon styling for quill within the button */
+.icon {
+  width: 35px; /* Icon size */
+  height: auto;
 }
+
