@@ -4,42 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Medieval Fantasy Adventure Chatbot</title>
+    
+    <!-- Link to Great Vibes font from Google Fonts for a calligraphy-style title font -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    
+    <!-- Link to external CSS file for styling the chatbot interface -->
     <link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
 <body>
     <div class="container">
+        <!-- Main title for the chatbot, styled as a medieval header -->
         <h1>Medieval Fantasy Adventure</h1>
 
         <!-- Avatar Section -->
         <div class="avatar-section">
-            <img class="avatar" src="/images/avatar-placeholder.png" alt="Bot Avatar">
+            <!-- Display the avatar image for the chatbot character -->
+            <img class="avatar" src="/stylesheets/avatar.jpg" alt="Bot Avatar">
         </div>
 
         <!-- Chat Messages Section -->
         <div id="chatbox" class="chatbox">
-            <!-- Bot's welcome message -->
-            <% for (let chat of chats) { %>
-                <div class="message <%= chat.role === 'assistant' ? 'user-message' : 'bot-message' %>">
-                    <p><%= chat.content %></p>
-                </div>
-            <% } %>
+            <!-- Initial bot message prompting the user to enter their name -->
+            <div class="message bot-message">
+                <p>Welcome, brave adventurer! What is your name?</p>
+            </div>
         </div>
 
         <!-- User Input Section -->
-        <form class="input-container" action="./message" method="POST">
-            <input type="text" name="message" placeholder="Type your response here..." />
-            <button type="submit" id="send-btn" onclick="onsend()">Send</button>
-        </form>
-
-        <script>
-            const onsend = () => {
-                const chatbox = document.getElementById('chatbox');
-                const loading = document.createElement('div');
-                loading.classList.add('message', 'bot-message');
-                loading.innerHTML = '<p>Loading...</p>';
-                chatbox.appendChild(loading);
-            }
-        </script>
+        <div class="input-container">
+            <!-- Input field for the user to type their message -->
+            <input type="text" id="user-input" placeholder="Speak your mind, adventurer...">
+            <!-- Send button with a quill icon to send the user's message -->
+            <button id="send-btn">
+                <img src="/stylesheets/quill.svg" alt="Send" class="icon">
+            </button>
+        </div>
     </div>
+
+    <!-- Background Music with autoplay triggered on first user interaction -->
+    <audio id="background-music" src="/audio/bgm.mp3" loop></audio>
+
+    <script>
+        // DOM elements for chatbox, user input, send button, and background music
+        const chatbox = document.getElementById('chatbox');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-btn');
+        const music = document.getElementById('background-music');
+
+        // Play background music on first user interaction to bypass autoplay restrictions
+        window.addEventListener('click', () => {
+            if (music.paused) {
+                music.play(); // Start playing background music
+            }
+        }, { once: true }); // Ensures the music starts only on the first click
+
+        // Event listener for the send button to handle user messages
+        sendButton.addEventListener('click', function() {
+            const userMessage = userInput.value; // Capture the user input message
+
+            // Check if the user input is not empty or whitespace
+            if (userMessage.trim()) {
+                // Create a new user message element and add it to the chatbox
+                const userMessageElement = document.createElement('div');
+                userMessageElement.classList.add('message', 'user-message');
+                userMessageElement.innerHTML = `<p>${userMessage}</p>`;
+                chatbox.appendChild(userMessageElement); // Add user message to chatbox
+                userInput.value = ''; // Clear the input field after sending
+
+                // Simulate a bot response and add it to the chatbox
+                const botResponse = document.createElement('div');
+                botResponse.classList.add('message', 'bot-message');
+                botResponse.innerHTML = `<p>Ah, ${userMessage}, prepare for your quest!</p>`;
+                chatbox.appendChild(botResponse); // Add bot message to chatbox
+
+                // Scroll to the bottom of the chatbox to show the latest messages
+                chatbox.scrollTop = chatbox.scrollHeight;
+            }
+        });
+    </script>
 </body>
 </html>
