@@ -52,6 +52,7 @@
         const userInput = document.getElementById('user-input');
         const sendButton = document.getElementById('send-btn');
         const music = document.getElementById('background-music');
+        chatbox.scrollTop = chatbox.scrollHeight;
 
         // Play background music on first user interaction to bypass autoplay restrictions
         window.addEventListener('click', () => {
