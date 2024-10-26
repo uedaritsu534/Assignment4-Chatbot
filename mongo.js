@@ -2,7 +2,10 @@ const {MongoClient, ObjectId} = require('mongodb');
 
 // MongoDB connection URI
 const uri = process.env.MONGODB_URI;
-const client = new MongoClient(uri);
+const client = new MongoClient(uri, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+});
 
 // Connect to MongoDB
 client.connect()
