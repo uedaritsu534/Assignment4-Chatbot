@@ -1,6 +1,6 @@
 /* Styling for the main page background */
 body {
-  background-image: url('/stylesheets/background.jpg'); /* Scenic medieval fantasy background */
+  background-image: url('/images/background.jpg'); /* Scenic medieval fantasy background */
   background-size: cover; /* Ensures background covers the entire viewport */
   background-position: center; /* Centers the background image */
   background-repeat: no-repeat; /* Prevents the image from repeating */
@@ -17,7 +17,7 @@ body {
 /* Container for the main chatbot interface */
 .container {
   width: 60%;
-  background-image: url('/stylesheets/paper.jpg'); /* Scroll paper background for medieval effect */
+  background-image: url('/images/paper.jpg'); /* Scroll paper background for medieval effect */
   background-size: cover;
   background-repeat: no-repeat;
   border: 2px solid #b5651d; /* Frame-like border for an old-world look */
