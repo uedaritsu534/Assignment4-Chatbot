@@ -1,18 +1,13 @@
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
-const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const logger = require('morgan');
-
-const dotenv = require('dotenv');
-dotenv.config(); // Load environment variables from .env file
-
-const OpenAIApi = require('openai');
-const openai = new OpenAIApi({
-  api_key: process.env.OPENAI_API_KEY
-});
+const { chatWithOpenAI, appendInitial } = require('./chatbot.js');
+const { newChat, getChats, postChats, closeMongo } = require('./mongo.js');
 
 const app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,15 +16,26 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
+app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-const port = process.env.PORT || 3000;
-const server = app.listen(port, () => console.log(`Server running on port ${port}`));
+app.get('/', async (req, res) => {
+  const id = await newChat();
+  res.redirect(`/chats/${id}/`);
+});
 
-app.get('/', (req, res) => {
-  res.render('index');
-})
+app.get('/chats/:chatId', async (req, res) => {
+  const partialChats = await getChats(req.params.chatId);
+  const chats = appendInitial(partialChats);
+  res.render('index', { chats });
+});
+
+app.post('/chats/:chatId/message', async (req, res) => {
+  const chats = await getChats(req.params.chatId);
+  const response = await chatWithOpenAI([...chats, { role: 'user', content: req.body.message}]);
+  await postChats(req.params.chatId, req.body.message, response)
+  res.redirect(`/chats/${req.params.chatId}/`);
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -47,44 +53,19 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-// Chat history
-const chatHistory = [];
+const port = process.env.PORT || 3000;
+const server = app.listen(port, () => console.log(`Server running on port ${port}`));
 
-//Makes the API call to OpenAI
-app.post('/message', async (req, res) => {
+process.on('SIGTERM', async () => {
+  console.info('SIGTERM signal received.');
 
-  console.log(process.env.OPENAI_API_KEY);
+  console.log('Closing mongodb connection...');
+  await closeMongo();
+  console.log('Mongodb connection closed.');
 
-  try {
-      const prompt = req.body;
-
-      //Iterate through the chat history to create the messages array
-      const messages = chatHistory.map(([role, content]) => ({
-        role,
-        content,
-      }));
-
-      //add the most recent user input to the messages array
-      messages.push({"role": "user", "content": prompt})
-
-      //Call the OpenAI API
-      const chatCompletion = await openai.createChatCompletion({
-          model: "gpt-4o",
-          messages: messages,
-        });
-
-        //adds the user input and the completion text to the chat history
-        chatHistory.push(['user', userInput]);
-        chatHistory.push(['assistant', completionText]);
-
-        //returns the completion text to the client
-        res.json({
-          message : chatCompletion.data.choices[0].message.content,
-          role: chatCompletion.data.choices[0].message.role
-        });
-  } catch (error) {
-      console.log("caught error");
-      console.log(JSON.stringify(error));
-  }
-
+  console.log('Closing http server...');
+  server.close((err) => {
+    console.log('Http server closed.');
+    process.exit(err ? 1 : 0);
+  });
 });

@@ -1,67 +1,45 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Chatbot</title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medieval Fantasy Adventure Chatbot</title>
+    <link rel="stylesheet" href="/stylesheets/style.css" />
 </head>
 <body>
-<h1>Chatbot</h1>
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
-            <h1 class="text-center">Chat with A.I</h1>
-            <div id="chatbox" class="border p-3 mb-4" style="height: 400px; overflow-y: auto;">
-                <!-- Messages will be appended here -->
-            </div>
-            <div class="input-group">
-                <input id="inputbox" type="text" class="form-control" placeholder="Type your message...">
-                <div class="input-group-append">
-                    <button class="btn btn-primary" onclick="sendMessage()">Send</button>
-                </div>
-            </div>
+    <div class="container">
+        <h1>Medieval Fantasy Adventure</h1>
+
+        <!-- Avatar Section -->
+        <div class="avatar-section">
+            <img class="avatar" src="/images/avatar-placeholder.png" alt="Bot Avatar">
         </div>
+
+        <!-- Chat Messages Section -->
+        <div id="chatbox" class="chatbox">
+            <!-- Bot's welcome message -->
+            <% for (let chat of chats) { %>
+                <div class="message <%= chat.role === 'assistant' ? 'user-message' : 'bot-message' %>">
+                    <p><%= chat.content %></p>
+                </div>
+            <% } %>
+        </div>
+
+        <!-- User Input Section -->
+        <form class="input-container" action="./message" method="POST">
+            <input type="text" name="message" placeholder="Type your response here..." />
+            <button type="submit" id="send-btn" onclick="onsend()">Send</button>
+        </form>
+
+        <script>
+            const onsend = () => {
+                const chatbox = document.getElementById('chatbox');
+                const loading = document.createElement('div');
+                loading.classList.add('message', 'bot-message');
+                loading.innerHTML = '<p>Loading...</p>';
+                chatbox.appendChild(loading);
+            }
+        </script>
     </div>
-</div>
-
-<script>
-
-    async function sendMessage() {
-        const inputbox = document.getElementById('inputbox');
-        const message = inputbox.value;
-        appendMessage(message, 'user');
-
-
-        // Clear the input box
-        inputbox.value = '';
-
-        // Make API call
-        try {
-            appendMessage('Loading...', 'bot');
-            //This code is not working
-            const response = await axios.post('http://localhost:3000/message', { prompt : message});
-            
-            appendMessage(response.data.message, 'bot');
-        } catch (error) {
-            console.error(error);
-            appendMessage('Error occurred while fetching the response.', 'bot');
-        }
-    }
-
-    function appendMessage(message, sender) {
-        const chatbox = document.getElementById('chatbox');
-        const msgElement = document.createElement('p');
-        //msgElement.classList = sender === 'user' ? 'text-right' : 'text-left text-success';
-        msgElement.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
-        msgElement.innerText = message;
-        chatbox.appendChild(msgElement);
-
-        // Scroll to the bottom
-        chatbox.scrollTop = chatbox.scrollHeight;
-    }
-</script>
-
-
 </body>
 </html>
